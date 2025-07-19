@@ -122,7 +122,7 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                                                 <td className="px-4 py-2">
                                                   <div
                                                     onClick={() => window.open(component.product_url, '_blank')}
-                                                    className="text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 bg-amber-500 dark:bg-amber-600 py-2 rounded-lg px-3 text-sm flex items-center gap-2"
+                                                    className="text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 bg-amber-500 dark:bg-amber-600 py-2 rounded-lg px-3 text-sm flex items-center gap-2 cursor-pointer"
                                                   >
                                                     <Search size={16} /> Find Product Online
                                                   </div>
