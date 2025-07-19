@@ -40,19 +40,19 @@ export const gatherQuote = async (components: string) => {
                       type: Type.STRING,
                     },
                     product_price: {
-                      type: Type.STRING,
+                      type: Type.INTEGER,
                     },
                     class_name: {
                       type: Type.STRING,
                     },
                     total: {
-                      type: Type.STRING,
+                      type: Type.INTEGER,
                     },
                   },
                 },
               },
               total_quote: {
-                type: Type.STRING,
+                type: Type.INTEGER,
               },
             },
           },
@@ -60,7 +60,10 @@ export const gatherQuote = async (components: string) => {
       },
       systemInstruction: [
           {
-            text: `You are tasked to audit electrical components, the electrical components are to be of Philippine standards, you are free to browse online for the products in order to get a quota of the items. Make sure products url are existing and is still available.`,
+            text: `
+            You are tasked to audit electrical components, the electrical components are to be of Philippine standards, 
+            you are free to create the search url with the product name.            
+            `, 
           }
       ],
     };

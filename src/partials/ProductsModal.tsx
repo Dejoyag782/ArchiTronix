@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface ElectricalComponents {
@@ -74,7 +74,10 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                 &#8203;
                 </span>
 
-                <div className="inline-block align-bottom bg-white min-w-[25em] md:max-w-[50em] lg:min-w-[100em] rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:p-6"  ref={modalRef}>
+                <div className=" border-white border-1 inline-block align-bottom bg-gray-200 opacity-97 min-w-[25em] md:max-w-[40em] lg:min-w-[100em] rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full sm:p-6"  ref={modalRef}
+                style={{
+                boxShadow: 'inset -10px -10px 20px rgba(0, 0, 0, 0.25), inset 10px 10px 20px rgba(255, 255, 255, 0.25)'
+                }}>
                     <div className="sm:flex sm:items-start">
                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full h-screen">
                           <div className="flex justify-between items-center w-full">
@@ -91,7 +94,7 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                                         {Object.entries(resultDetected || {}).map(([key, value]) => {
                                             const numValue = Number(value);
                                             if (!isNaN(numValue) && numValue > 0) {
-                                                return <li className="text-sm text-gray-500 capitalize" key={key}>{key.replace(/_/g, ' ')}: {numValue}</li>;
+                                                return <><li className="text-sm text-gray-500 capitalize" key={key}>{key.replace(/_/g, ' ')}: {numValue}</li><hr className="my-2" /></>;
                                             }
                                             return null;
                                         })}
@@ -103,41 +106,41 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                                         <tr>
                                           <th className="px-4 py-2 text-left font-medium text-gray-700">Class Name</th>
                                           <th className="px-4 py-2 text-left font-medium text-gray-700">Matched Product Name</th>
-                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Product Price</th>
-                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Product URL</th>
+                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Find Product</th>
                                           <th className="px-4 py-2 text-left font-medium text-gray-700">Quantity</th>
-                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Total</th>
+                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Avg.Product Price</th>
+                                          <th className="px-4 py-2 text-left font-medium text-gray-700">Estimated Total</th>
                                         </tr>
                                       </thead>
                                       <tbody className="divide-y divide-gray-200">
                                         {quoteResult?.candidates?.[0]?.content?.parts?.[0]?.text &&
                                           JSON.parse(quoteResult.candidates[0].content.parts[0].text)?.electrical_specifications?.components?.map(
                                             (component: any, idx: number) => (
-                                              <tr key={idx}>
+                                              <tr key={idx} className="hover:bg-gray-100 border-b border-gray-100">
                                                 <td className="px-4 py-2">{component.class_name}</td>
                                                 <td className="px-4 py-2">{component.name}</td>
-                                                <td className="px-4 py-2">{component.product_price}</td>
                                                 <td className="px-4 py-2">
                                                   <button
                                                     onClick={() => window.open(component.product_url, '_blank')}
-                                                    className="text-white bg-amber-600 hover:bg-amber-700 rounded px-3 py-1 text-sm"
+                                                    className="text-white bg-amber-600 hover:bg-amber-700 rounded px-3 py-1 text-sm flex items-center gap-2"
                                                   >
-                                                    View Product
+                                                    <Search size={16} /> Find Product Online
                                                   </button>
                                                 </td>
-                                                <td className="px-4 py-2">{component.quantity}</td>
-                                                <td className="px-4 py-2">{component.total}</td>
+                                                <td className="px-4 py-2">{new Intl.NumberFormat().format(component.quantity)}</td>
+                                                <td className="px-4 py-2">₱ {new Intl.NumberFormat().format(component.product_price)}</td>
+                                                <td className="px-4 py-2 font-semibold">₱ {new Intl.NumberFormat().format(component.total)}</td>
                                               </tr>
                                             )
                                           )}
                                           {quoteResult?.candidates?.[0]?.content?.parts?.[0]?.text &&
                                               <tr key={quoteResult.candidates[0].content.parts[0].text} className="bg-amber-100">
-                                                <td className="px-4 py-2 text-left font-semibold">TOTAL QUOTATION:</td>
+                                                <td className="px-4 py-2 text-left font-semibold">TOTAL QUOTATION ESTIMATED:</td>
                                                 <td className="px-4 py-2"></td>
                                                 <td className="px-4 py-2"></td>
                                                 <td className="px-4 py-2"></td>
                                                 <td className="px-4 py-2"></td>
-                                                <td className="px-4 py-2 font-semibold">{JSON.parse(quoteResult.candidates[0].content.parts[0].text)?.electrical_specifications?.total_quote}</td>
+                                                <td className="px-4 py-2 font-semibold">₱ {new Intl.NumberFormat().format(JSON.parse(quoteResult.candidates[0].content.parts[0].text)?.electrical_specifications?.total_quote)}</td>
                                               </tr>
                                           }
                                       </tbody>

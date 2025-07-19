@@ -7,6 +7,8 @@ import ProductsModal from './partials/ProductsModal';
 import { detectSymbolsViaRoboFlow } from './service/RoboFlowAPI';
 import { countPredictionClasses } from './helpers/SymbolClassCounter';
 import { gatherQuote } from './service/GatherQuote';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [image, setImage] = useState<string | null>(null);
@@ -23,27 +25,36 @@ function App() {
   }
 
   const handleSymbolDetection = async () => {
+
+    if(!image){
+      toast.error("Please upload an image");
+      return;
+    }
     setResult(undefined);
     try {
       setIsLoading(true);
       
       setLoadingText('Detecting Symbols...');
+      toast.info("Detecting Symbols...");
       setStepPercent(25);
       const result = await detectSymbolsViaRoboFlow(image!);
       console.log(result);
       // Parse the JSON string into RoboflowResult object
       
       setLoadingText('Parsing Results...');
+      toast.info("Parsing Results...");
       setStepPercent(50);
       const parsedResult = await JSON.parse(result) as RoboflowResult;
       setRoboFlowResult(parsedResult);
 
       console.log(parsedResult);
       setLoadingText('Counting Components...');
+      toast.info("Counting Components...");
       setStepPercent(75);
       const classCounts = await countPredictionClasses(parsedResult);
       if(classCounts){
         setLoadingText('Generating Quote...');
+        toast.info("Generating Quote...");
         const quote = await gatherQuote(JSON.stringify(classCounts, null, 2));
         setStepPercent(100);
         setQuoteResult(quote);
@@ -51,9 +62,10 @@ function App() {
 
       }
       setResult(JSON.stringify(classCounts, null, 2));
-      console.log(JSON.stringify(classCounts, null, 2));
+      toast.success("Quote Generated");
     } catch (error) {
       console.error("Error during symbol detection:", error);
+      toast.error("Error during symbol detection");
     } finally {
       setIsLoading(false);
     }
@@ -73,8 +85,7 @@ function App() {
         }
         return;
     }
-
-    alert("Please wait for the previous detection to complete");
+    toast.info("Please wait for the previous detection to complete");
    
   };
 
