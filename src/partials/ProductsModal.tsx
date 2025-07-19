@@ -94,7 +94,7 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                                         {Object.entries(resultDetected || {}).map(([key, value]) => {
                                             const numValue = Number(value);
                                             if (!isNaN(numValue) && numValue > 0) {
-                                                return <><li className="text-sm text-gray-500 capitalize" key={key}>{key.replace(/_/g, ' ')}: {numValue}</li><hr className="my-2" /></>;
+                                                return <><li className="text-sm text-gray-500 capitalize" key={key}>{key.replace(/_/g, ' ')}: <span className="font-semibold">{numValue}</span></li><hr className="my-2" /></>;
                                             }
                                             return null;
                                         })}
@@ -120,12 +120,12 @@ export default function ProductsModal({ resultDetected, quoteResult }: ProductsM
                                                 <td className="px-4 py-2">{component.class_name}</td>
                                                 <td className="px-4 py-2">{component.name}</td>
                                                 <td className="px-4 py-2">
-                                                  <button
+                                                  <div
                                                     onClick={() => window.open(component.product_url, '_blank')}
-                                                    className="text-white bg-amber-600 hover:bg-amber-700 rounded px-3 py-1 text-sm flex items-center gap-2"
+                                                    className="text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 bg-amber-500 dark:bg-amber-600 py-2 rounded-lg px-3 text-sm flex items-center gap-2"
                                                   >
                                                     <Search size={16} /> Find Product Online
-                                                  </button>
+                                                  </div>
                                                 </td>
                                                 <td className="px-4 py-2">{new Intl.NumberFormat().format(component.quantity)}</td>
                                                 <td className="px-4 py-2">₱ {new Intl.NumberFormat().format(component.product_price)}</td>
